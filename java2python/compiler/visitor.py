@@ -452,7 +452,8 @@ class MethodContent(VarAcceptor, Base):
         else:
             whileStat.expr.walk(cond, memo)
         whileBlock = self.factory.methodContent(parent=self)
-        if not node.firstChildOfType(tokens.BLOCK_SCOPE).children:
+        # issue 25 fix : https://github.com/natural/java2python/issues/25
+        if node.firstChildOfType(tokens.BLOCK_SCOPE) and not node.firstChildOfType(tokens.BLOCK_SCOPE).children:
             self.factory.expr(left='pass', parent=whileBlock)
         else:
             whileBlock.walk(node.firstChildOfType(tokens.BLOCK_SCOPE), memo)
